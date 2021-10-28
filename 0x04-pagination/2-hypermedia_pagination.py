@@ -3,7 +3,7 @@
 
 import csv
 import math
-from typing import List, Mapping
+from typing import List, Dict, Any
 
 index_range = __import__('0-simple_helper_function').index_range
 
@@ -42,7 +42,7 @@ class Server:
                 data.append(self.dataset()[i])
         return data
 
-    def get_hyper(self, page: int = 1, page_size: int = 10) -> Mapping:
+    def get_hyper(self, page: int = 1, page_size: int = 10) -> Dict[str, Any]:
         """Function that returns the appropriate page of the dataset
         """
         assert type(page) is int and type(page_size) is int
