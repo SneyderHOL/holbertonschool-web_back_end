@@ -4,6 +4,7 @@
 from api.v1.auth.auth import Auth
 from flask import request
 from typing import List, TypeVar
+from models.user import User
 import base64
 
 
@@ -41,3 +42,16 @@ class BasicAuth(Auth):
            ':' not in decoded_base64_authorization_header:
             return (None, None)
         return tuple(decoded_base64_authorization_header.split(':'))
+
+    def user_object_from_credentials(self, user_email: str,
+                                     user_pwd: str) -> TypeVar('User'):
+        """Returns the User instance based on his email and password"""
+        if user_email is None or user_pwd is None:
+            return None
+        if type(user_email) is not str or type(user_pwd) is not str:
+            return None
+        user = User.search({'email': user_email})
+        user = user[0] if len(user) != 0 else None
+        if user:
+            return user if user.is_valid_password(user_pwd) else None
+        return None
