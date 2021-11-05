@@ -15,11 +15,12 @@ CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 auth = None
 auth_environment_var = 'AUTH_TYPE'
 
-if os.getenv(auth_environment_var):
-    auth = os.getenv(auth_environment_var)
+if os.getenv(auth_environment_var) == 'auth':
     from api.v1.auth.auth import Auth
     auth = Auth()
-
+elif os.getenv(auth_environment_var) == 'basic_auth':
+    from api.v1.auth.basic_auth import BasicAuth
+    auth = BasicAuth()
 
 @app.errorhandler(404)
 def not_found(error) -> str:
