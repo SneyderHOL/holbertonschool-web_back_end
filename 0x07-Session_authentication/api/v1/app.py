@@ -21,6 +21,9 @@ if os.getenv(auth_environment_var) == 'auth':
 elif os.getenv(auth_environment_var) == 'basic_auth':
     from api.v1.auth.basic_auth import BasicAuth
     auth = BasicAuth()
+elif os.getenv(auth_environment_var) == 'session_auth':
+    from api.v1.auth.session_auth import SessionAuth
+    auth = SessionAuth()
 
 
 @app.errorhandler(404)
