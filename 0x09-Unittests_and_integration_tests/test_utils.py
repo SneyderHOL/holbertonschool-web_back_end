@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """Unittests and Integration Tests module"""
 import unittest
-from utils import access_nested_map
+import requests
+from utils import access_nested_map, get_json
 from parameterized import parameterized
+from unittest.mock import Mock, patch
 
 
 class TestAccessNestedMap(unittest.TestCase):
-    """Test class"""
+    """Test class for access_nested_map"""
 
     @parameterized.expand([
         ({'a': 1}, ('a',), 1),
@@ -24,3 +26,19 @@ class TestAccessNestedMap(unittest.TestCase):
     def test_access_nested_map_exception(self, nested_map, path, expected):
         """unit test for utils.access_nested_map's exceptions"""
         self.assertRaises(KeyError)
+
+
+class TestGetJson(unittest.TestCase):
+    """Test class for get_json"""
+    @parameterized.expand([
+        ('http://example.com', {"payload": True}),
+        ('http://holberton.io', {"payload": False})
+    ])
+    def test_get_json(self, url, payload):
+        """Mock test for utils.get_json"""
+        config = {'return_value.json.return_value': payload}
+        patcher = patch('requests.get', **config)
+        mock_response = patcher.start()
+        self.assertEqual(get_json(url), payload)
+        mock_response.assert_called_once_with(url)
+        patcher.stop()
