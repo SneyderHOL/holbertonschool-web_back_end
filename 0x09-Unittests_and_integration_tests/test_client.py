@@ -18,7 +18,7 @@ class TestGithubOrgClient(unittest.TestCase):
         """unit test for test_org"""
         client_obj = GithubOrgClient(org_name)
         client_obj.org()
-        mock.assert_called_once_with('https://api.github.com/orgs/'+org_name)
+        mock.assert_called_once_with('https://api.github.com/orgs/' + org_name)
 
     def test_public_repos_url(self):
         """unit test for _public_repos_url property"""
@@ -50,5 +50,5 @@ class TestGithubOrgClient(unittest.TestCase):
     ])
     def test_has_license(self, repo, license_key, expected):
         """unit test for has_license"""
-        has_license_result = GithubOrgClient('org_name').has_license(repo, license_key)
+        has_license_result = GithubOrgClient.has_license(repo, license_key)
         self.assertEqual(has_license_result, expected)
