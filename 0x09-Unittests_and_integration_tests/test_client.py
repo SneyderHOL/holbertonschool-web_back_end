@@ -1,27 +1,26 @@
 #!/usr/bin/env python3
 """Unittests and Integration Tests module"""
 import unittest
-# import requests
 from client import GithubOrgClient
 from parameterized import parameterized
 from unittest.mock import Mock, patch, PropertyMock
 
 
 class TestGithubOrgClient(unittest.TestCase):
-    """Test class for client module"""
+    """Test class for GithubOrgClient class"""
     @parameterized.expand([
         ('google'),
         ('abc')
     ])
     @patch('client.get_json')
     def test_org(self, org_name, mock):
-        """unit test for test_org"""
+        """unit test for test_org method"""
         client_obj = GithubOrgClient(org_name)
         client_obj.org()
         mock.assert_called_once_with('https://api.github.com/orgs/' + org_name)
 
     def test_public_repos_url(self):
-        """unit test for _public_repos_url property"""
+        """unit test for GithubOrgClient _public_repos_url property"""
         with patch('client.GithubOrgClient.org',
                    new_callable=PropertyMock) as mock_property:
             return_dict = {'repos_url': 'World'}
@@ -32,7 +31,7 @@ class TestGithubOrgClient(unittest.TestCase):
 
     @patch('client.get_json')
     def test_public_repos(self, mock):
-        """unit test for public_repos"""
+        """unit test for GithubOrgClient public_repos method"""
         expected_repos = ['repo1', 'repo2']
         mock.return_value = [{'name': expected_repos[0]},
                              {'name': expected_repos[1]}]
@@ -49,6 +48,6 @@ class TestGithubOrgClient(unittest.TestCase):
         ({"license": {"key": "other_license"}}, "my_license", False)
     ])
     def test_has_license(self, repo, license_key, expected):
-        """unit test for has_license"""
+        """unit test for GithubOrgClient has_license static method"""
         has_license_result = GithubOrgClient.has_license(repo, license_key)
         self.assertEqual(has_license_result, expected)
