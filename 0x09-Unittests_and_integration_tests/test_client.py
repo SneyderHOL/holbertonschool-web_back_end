@@ -14,7 +14,7 @@ class TestGithubOrgClient(unittest.TestCase):
     ])
     @patch('client.get_json')
     def test_org(self, org_name, mock):
-        """unit test for test_org method"""
+        """unit test for GithubOrgClient test_org method"""
         client_obj = GithubOrgClient(org_name)
         client_obj.org()
         mock.assert_called_once_with('https://api.github.com/orgs/' + org_name)
