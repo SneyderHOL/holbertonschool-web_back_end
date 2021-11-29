@@ -18,9 +18,7 @@ class TestGithubOrgClient(unittest.TestCase):
         """unit test for test_org"""
         client_obj = GithubOrgClient(org_name)
         client_obj.org()
-        mock.assert_called_once_with(
-            'https://api.github.com/orgs/{}'.format(org_name)
-        )
+        mock.assert_called_once_with('https://api.github.com/orgs/'+org_name)
 
     def test_public_repos_url(self):
         """unit test for _public_repos_url property"""
@@ -29,9 +27,8 @@ class TestGithubOrgClient(unittest.TestCase):
             return_dict = {'repos_url': 'World'}
             mock_property.return_value = return_dict
             client_obj = GithubOrgClient('org_name')
-            self.assertEqual(
-                client_obj._public_repos_url, return_dict['repos_url']
-            )
+            repos_url = client_obj._public_repos_url
+            self.assertEqual(repos_url, return_dict['repos_url'])
 
     @patch('client.get_json')
     def test_public_repos(self, mock):
@@ -53,5 +50,5 @@ class TestGithubOrgClient(unittest.TestCase):
     ])
     def test_has_license(self, repo, license_key, expected):
         """unit test for has_license"""
-        client_obj = GithubOrgClient('org_name')
-        self.assertEqual(client_obj.has_license(repo, license_key), expected)
+        has_license_result = GithubOrgClient('org_name').has_license(repo, license_key)
+        self.assertEqual(has_license_result, expected)
