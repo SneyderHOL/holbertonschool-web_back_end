@@ -46,7 +46,7 @@ def replay(method: Callable) -> Callable:
     outputs = _redis.lrange(key + ':outputs', init_index, end_index)
     print('{} was called {} times:'.format(key, value))
     for i, o in zip(inputs, outputs):
-        print('{}(*{}) -> {}'.format(key, k.decode(utf_f), v.decode(utf_f)))
+        print('{}(*{}) -> {}'.format(key, i.decode(utf_f), o.decode(utf_f)))
 
 
 class Cache:
