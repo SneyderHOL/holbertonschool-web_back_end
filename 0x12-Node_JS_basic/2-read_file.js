@@ -3,7 +3,7 @@ const fs = require('fs');
 function countStudents(path) {
   const encoding = 'utf-8';
   let numberOfStudents = 0;
-  let studentsByField = new Map();
+  const studentsByField = new Map();
   let header = true;
   let data = null;
   try {
@@ -16,21 +16,21 @@ function countStudents(path) {
       header = false;
       return;
     }
-    student = element.split(',');
-    if (student.length === 0) {
+    const student = element.split(',');
+    if (student.length < 4) {
       return;
     }
     if (!(studentsByField.has(student[3]))) {
       studentsByField.set(student[3], []);
     }
     studentsByField.get(student[3]).push(student[0]);
-    numberOfStudents++;
+    numberOfStudents += 1;
   });
   console.log(`Number of students: ${numberOfStudents}`);
   studentsByField.forEach(
     (value, key) => console.log(
-      `Number of students in ${key}: ${value.length}. List: ${value.join(', ')}`
-    )
+      `Number of students in ${key}: ${value.length}. List: ${value.join(', ')}`,
+    ),
   );
 }
 
