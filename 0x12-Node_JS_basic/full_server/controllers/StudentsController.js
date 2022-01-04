@@ -6,31 +6,39 @@ class StudentsController {
   static getAllStudents(request, response) {
     readDatabase(databasePath)
       .then((data) => {
-        let message = '';
-        message += 'This is the list of our students';
+        const students = [];
+        let message;
+        students.push('This is the list of our students');
+
         for (const key of Object.keys(data)) {
-          message += `\nNumber of students in ${key}: ${data[key].length}. List: ${data[key].join(', ')}`;
+          message = `Number of students in ${key}: ${
+            data[key].length
+          }. List: ${data[key].join(', ')}`;
+
+          students.push(message);
         }
-        response.status(200).send(message);
+        response.send(200, `${students.join('\n')}`);
       })
       .catch(() => {
-        response.status(500).send('Cannot load the database');
+        response.send(500, 'Cannot load the database');
       });
   }
 
   static getAllStudentsByMajor(request, response) {
     const { major } = request.params;
+
     if (major !== 'CS' && major !== 'SWE') {
       response.send(500, 'Major parameter must be CS or SWE');
     } else {
       readDatabase(databasePath)
         .then((data) => {
           const students = data[major];
-          response.status(200).send(`List: ${students.join(', ')}`);
+
+          response.send(200, `List: ${students.join(', ')}`);
         })
-        .catch(() => response.status(500).send('Cannot load the database'));
+        .catch(() => response.send(500, 'Cannot load the database'));
     }
   }
 }
 
-module.exports = StudentsController;
+export default StudentsController;

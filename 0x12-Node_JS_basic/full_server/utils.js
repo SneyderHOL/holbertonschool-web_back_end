@@ -1,30 +1,30 @@
 const fs = require('fs');
 
-function readDatabase(filePath) {
-  const encoding = 'utf-8';
+function readDatabase(path) {
   return new Promise((resolve, reject) => {
-    const studentsByField = {};
-    fs.readFile(filePath, encoding, (error, data) => {
-      let header = true;
-      if (error) {
-        reject(error);
+    fs.readFile(path, 'utf8', (err, data) => {
+      if (err) {
+        reject(Error(err));
         return;
       }
-      data.split('\n').forEach((element) => {
-        if (header) {
-          header = false;
-          return;
+      const content = data.toString().split('\n');
+
+      let students = content.filter((item) => item);
+
+      students = students.map((item) => item.split(','));
+
+      const fields = {};
+      for (const i in students) {
+        if (i !== 0) {
+          if (!fields[students[i][3]]) fields[students[i][3]] = [];
+
+          fields[students[i][3]].push(students[i][0]);
         }
-        const student = element.split(',');
-        if (student.length < 4) {
-          return;
-        }
-        if (!(studentsByField[student[3]])) {
-          studentsByField[student[3]] = [];
-        }
-        studentsByField[student[3]].push(student[0]);
-      });
-      resolve(studentsByField);
+      }
+
+      delete fields.field;
+
+      resolve(fields);
     });
   });
 }
