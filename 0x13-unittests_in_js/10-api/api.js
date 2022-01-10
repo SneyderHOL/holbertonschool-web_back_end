@@ -22,11 +22,8 @@ app.get('/available_payments', (req, res) => {
 });
 
 app.post('/login', (req, res) => {
-  // const username = req.body.userName;
-  console.log(req)
-  console.log(req.body);
-  // res.end(`Welcome ${username}`);
-  res.end("RESP");
+  const username = req.body.userName;
+  res.end(`Welcome ${username}`);
 });
 
 app.listen(port, () => {
