@@ -1,6 +1,6 @@
-const express = require('express');
-const redis = require('redis');
-const promisify = require('util').promisify;
+import express from 'express';
+import redis from 'redis';
+import { promisify } from 'util';
 
 const listProducts = [
   {
